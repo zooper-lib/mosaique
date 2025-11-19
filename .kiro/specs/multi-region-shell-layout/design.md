@@ -12,6 +12,15 @@ The system operates on three key abstractions:
 
 When navigation occurs, Mosaique evaluates the current route against all registered route definitions, selects the matching shell layout, evaluates view injection rules for each region, and constructs the final screen. The system is designed to be router-agnostic, with adapters available for popular routing libraries like go_router.
 
+### Parameter Extraction Architecture
+
+Mosaique distinguishes between two types of route parameters:
+
+- **Path Parameters**: Extracted by Mosaique's RouteMatcher from route patterns (e.g., `/users/:userId` → `{userId: "123"}`)
+- **Query Parameters**: Extracted by router adapters from their underlying routing libraries (e.g., go_router provides `GoRouterState.uri.queryParameters`)
+
+This design ensures Mosaique extends existing routing libraries rather than reimplementing their functionality. Router adapters are responsible for translating their library's navigation state into RouteContext objects that include both path and query parameters.
+
 ## Architecture
 
 ### High-Level Architecture
@@ -260,6 +269,9 @@ class GoRouterAdapter implements MosaiqueRouterAdapter {
   @override
   RouteContext getCurrentContext() {
     // Extract context from GoRouter state
+    // Query parameters come from GoRouterState.uri.queryParameters
+    // Path parameters come from GoRouterState.pathParameters
+    // The adapter translates go_router's state into Mosaique's RouteContext
   }
   
   @override
@@ -381,7 +393,7 @@ The following properties represent the unique, non-redundant correctness guarant
 **Validates: Requirements 4.1**
 
 ### Property 5: Query parameter extraction
-*For any* URL with query parameters, parsing should produce a map containing all query parameter key-value pairs.
+*For any* router adapter and navigation state with query parameters, the adapter should extract query parameters from the routing library and include them in the RouteContext.
 **Validates: Requirements 4.2**
 
 ### Property 6: Parameter availability in condition functions

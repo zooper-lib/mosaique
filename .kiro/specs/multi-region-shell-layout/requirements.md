@@ -61,7 +61,7 @@ Mosaique is a reusable Flutter package that enables declarative, route-driven pa
 #### Acceptance Criteria
 
 1. WHEN a route pattern contains path parameters THEN Mosaique SHALL extract parameter values from the current URL path
-2. WHEN a route contains query parameters THEN Mosaique SHALL extract query parameter values from the current URL
+2. WHEN a route contains query parameters THEN the router adapter SHALL extract query parameter values and include them in the Route Context
 3. WHEN condition functions are evaluated THEN Mosaique SHALL provide all extracted route parameters to those functions
 4. WHEN widget builder functions are invoked THEN Mosaique SHALL provide all extracted route parameters to those functions
 5. WHEN route parameters change THEN Mosaique SHALL re-evaluate conditions and rebuild affected Views with updated parameter values
