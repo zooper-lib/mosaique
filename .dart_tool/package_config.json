@@ -179,7 +179,7 @@
       "name": "mosaique",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "3.10"
+      "languageVersion": "3.0"
     }
   ],
   "generator": "pub",
