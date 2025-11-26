@@ -5,6 +5,15 @@ homepage: https://github.com/zooper-lib/mosaique
 repository: https://github.com/zooper-lib/mosaique
 issue_tracker: https://github.com/zooper-lib/mosaique/issues
 
+topics:
+  - routing
+  - navigation
+  - layout
+  - go-router
+  - shell
+  - regions
+  - composition
+
 environment:
   sdk: '>=3.0.0 <4.0.0'
   flutter: ">=3.0.0"
