@@ -35,14 +35,24 @@ class _MosaiqueExampleAppState extends State<MosaiqueExampleApp> {
         // All routes are handled by Mosaique
         GoRoute(
           path: '/:path(.*)',
-          builder: (context, state) {
-            // Return the Mosaique shell builder
-            return MosaiqueShellBuilder(
-              context: _adapter.getCurrentContext(),
-              shellLayouts: _shellLayouts,
-              routes: _routeDefinitions,
-              defaultBuilders: _defaultBuilders,
-              debugConfig: const MosaiqueDebugConfig(enabled: true, logRouteMatching: true, logViewResolution: true, logRebuilds: true),
+          pageBuilder: (context, state) {
+            // Return the Mosaique shell builder with custom page transitions
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: MosaiqueShellBuilder(
+                context: _adapter.getCurrentContext(),
+                shellLayouts: _shellLayouts,
+                routes: _routeDefinitions,
+                defaultBuilders: _defaultBuilders,
+                debugConfig: const MosaiqueDebugConfig(enabled: true, logRouteMatching: true, logViewResolution: true, logRebuilds: true),
+              ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                // Fade transition for all page changes
+                return FadeTransition(
+                  opacity: CurveTween(curve: Curves.easeInOut).animate(animation),
+                  child: child,
+                );
+              },
             );
           },
         ),
@@ -80,7 +90,24 @@ final _shellLayouts = <String, ShellLayout>{
     builder: (regions) {
       return Scaffold(
         appBar: AppBar(title: const Text('Mosaique Example'), backgroundColor: Colors.blue, foregroundColor: Colors.white),
-        body: regions['main'] ?? const SizedBox.shrink(),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          switchInCurve: Curves.easeInOut,
+          switchOutCurve: Curves.easeInOut,
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0.05, 0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              ),
+            );
+          },
+          child: regions['main'] ?? const SizedBox.shrink(),
+        ),
         drawer: regions['sidebar'],
       );
     },
@@ -93,16 +120,47 @@ final _shellLayouts = <String, ShellLayout>{
         appBar: AppBar(title: const Text('Two Column Layout'), backgroundColor: Colors.green, foregroundColor: Colors.white),
         body: Row(
           children: [
-            // Left column
-            Expanded(flex: 2, child: regions['main'] ?? const SizedBox.shrink()),
-            // Right column
+            // Left column with animation
+            Expanded(
+              flex: 2,
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0.05, 0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  );
+                },
+                child: regions['main'] ?? const SizedBox.shrink(),
+              ),
+            ),
+            // Right column with animation
             Expanded(
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
                   border: Border(left: BorderSide(color: Colors.grey.shade300)),
                 ),
-                child: regions['sidebar'] ?? const SizedBox.shrink(),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  switchInCurve: Curves.easeInOut,
+                  switchOutCurve: Curves.easeInOut,
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                  child: regions['sidebar'] ?? const SizedBox.shrink(),
+                ),
               ),
             ),
           ],
@@ -116,7 +174,7 @@ final _shellLayouts = <String, ShellLayout>{
     builder: (regions) {
       return Column(
         children: [
-          // Header region
+          // Header region with animation
           if (regions['header'] != null)
             Container(
               padding: const EdgeInsets.all(16),
@@ -124,10 +182,28 @@ final _shellLayouts = <String, ShellLayout>{
                 color: Colors.blue.shade50,
                 border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
               ),
-              child: regions['header'],
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 250),
+                switchInCurve: Curves.easeInOut,
+                switchOutCurve: Curves.easeInOut,
+                child: regions['header'],
+              ),
             ),
-          // Content region
-          Expanded(child: regions['content'] ?? const SizedBox.shrink()),
+          // Content region with animation
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              switchInCurve: Curves.easeInOut,
+              switchOutCurve: Curves.easeInOut,
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              child: regions['content'] ?? const SizedBox.shrink(),
+            ),
+          ),
         ],
       );
     },
