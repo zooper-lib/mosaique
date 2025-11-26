@@ -1,0 +1,23 @@
+# Files and directories to exclude from the published package
+
+# Git files
+.git/
+.gitignore
+.gitattributes
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.code-workspace
+
+# Build files (lib/ is needed for package)
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Test coverage
+coverage/
+
+# Note: example/ is intentionally included for pub.dev
