@@ -1,6 +1,6 @@
 name: mosaique
 description: A declarative, route-driven region-based view composition package for Flutter with go_router integration.
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/zooper-lib/mosaique
 repository: https://github.com/zooper-lib/mosaique
 issue_tracker: https://github.com/zooper-lib/mosaique/issues
@@ -19,7 +19,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  go_router: ^14.6.2
+  go_router: ">=14.6.2"
 
 dev_dependencies:
   flutter_test:
