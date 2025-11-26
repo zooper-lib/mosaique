@@ -9,11 +9,11 @@ Mosaique allows you to define shell layouts with named regions that can be fille
 ## Features
 
 - ✅ **Declarative** - Define everything in your route tree
-- ✅ **go_router native** - Works naturally with go_router's API
+- ✅ **go_router native** - Works naturally with go_router's API and uses its built-in animations
 - ✅ **Nested shells** - Shells can inject other shells infinitely
-- ✅ **Type-safe parameters** - Access route parameters via `context.pathParameters`
-- ✅ **Automatic animations** - Smooth transitions using AnimatedSwitcher
+- ✅ **Type-safe parameters** - Access route parameters via `state.pathParameters`
 - ✅ **Simple API** - Only 3 classes to learn
+- ✅ **Flexible navigation** - Mix shell routes with regular GoRoutes for full-screen views
 
 ## Installation
 
@@ -21,8 +21,8 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  mosaique: ^0.1.0
-  go_router: ^14.6.2
+  mosaique: <latest>
+  go_router: <any>
 ```
 
 ## Quick Start
@@ -69,26 +69,36 @@ final router = GoRouter(
           builder: (context, state) => const DashboardView(),
         ),
         MosaiqueViewRoute(
-          path: '/settings',
+          path: '/users/:userId',
           region: 'content',
-          builder: (context, state) => const SettingsView(),
+          builder: (context, state) => UserDetailsView(
+            userId: state.pathParameters['userId']!,
+          ),
         ),
       ],
+    ),
+    // Mix with regular GoRoutes for full-screen views
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsView(),
     ),
   ],
 );
 ```
 
-### 3. Use the Router
+### 3. Navigate
+
+Use standard go_router navigation methods:
 
 ```dart
-void main() {
-  runApp(
-    MaterialApp.router(
-      routerConfig: router,
-    ),
-  );
-}
+// Replace current route
+context.go('/dashboard');
+
+// Push new route onto stack
+context.push('/users/1');
+
+// Pop back
+context.pop();
 ```
 
 ## Core Concepts
@@ -98,9 +108,10 @@ void main() {
 Regions are named placeholders in your shell layouts. They get filled with content based on the current route.
 
 ```dart
-Region('content')  // Simple region
-Region('sidebar', transitionDuration: Duration(milliseconds: 500))  // With custom animation
+Region('content')  // Simple region placeholder
 ```
+
+Regions automatically display go_router's built-in page transitions when content changes.
 
 ### Fixed Regions
 
@@ -151,16 +162,47 @@ MosaiqueShellRoute(
 )
 ```
 
+## Navigation Patterns
+
+### Within Shell Routes
+
+Use `context.go()` for base navigation and `context.push()` to stack routes:
+
+```dart
+// Base navigation - replaces route
+context.go('/dashboard');
+
+// Stack navigation - pushes route
+context.push('/users/1');
+```
+
+### Full-Screen Views
+
+Mix regular `GoRoute` with shell routes for full-screen views that sit outside the shell:
+
+```dart
+GoRouter(
+  routes: [
+    MosaiqueShellRoute(/* shell with persistent UI */),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => SettingsPage(),
+    ),
+  ],
+)
+```
+
 ## Example
 
 See the [example](example/) directory for a complete working app demonstrating:
 
-- Main shell with header, sidebar, and content regions
-- Fixed regions for persistent UI
+- Main shell with header, menu, and content regions
+- Fixed regions for persistent UI (header, menu)
 - View injection based on routes
 - Nested shells (Users section with list/detail layout)
 - Route parameters
-- Navigation between routes
+- Navigation stack management with push/pop
+- Full-screen routes outside the shell
 
 ## API Reference
 
@@ -169,10 +211,7 @@ See the [example](example/) directory for a complete working app demonstrating:
 A placeholder widget that gets replaced with actual content.
 
 ```dart
-Region(
-  String name,  // Required: region identifier
-  {Duration? transitionDuration}  // Optional: animation duration
-)
+Region(String name)  // Required: region identifier
 ```
 
 ### `MosaiqueShellRoute`
@@ -204,12 +243,13 @@ MosaiqueViewRoute({
 ## How It Works
 
 1. go_router navigates and evaluates the route tree
-2. `MosaiqueShellRoute` builds the shell widget
-3. Each `Region` widget looks up what to render based on:
+2. `MosaiqueShellRoute` extends `ShellRoute` to maintain persistent shell layouts
+3. The shell's builder receives go_router's Navigator (child parameter) with page transitions
+4. Each `Region` widget looks up what to render based on:
    - Active child routes targeting that region
    - Fixed regions defined in the shell
    - Falls back to empty (SizedBox.shrink)
-4. Content changes are animated using `AnimatedSwitcher`
+5. go_router handles all page transition animations natively
 
 ## Contributing
 

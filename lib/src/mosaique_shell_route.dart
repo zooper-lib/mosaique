@@ -45,34 +45,48 @@ class MosaiqueShellRoute extends ShellRoute {
   ) {
     return (BuildContext context, GoRouterState state, Widget child) {
       // The 'child' parameter is go_router's navigator with page transitions
-      // We need to figure out which region should display this navigator
+      // We need to figure out which region(s) should display content
 
-      // Find the target region for the current route
-      String? targetRegion;
+      // Find ALL active routes and their target regions
+      final activeRoutes = <ActiveRouteData>[];
+      bool childAssigned = false;
+
       for (final route in routes) {
         if (route is MosaiqueViewRoute) {
           if (_isViewRouteActive(state, route)) {
-            targetRegion = route.region;
-            break;
+            // First matching route gets the go_router navigator (with animations)
+            if (!childAssigned) {
+              activeRoutes.add(
+                ActiveRouteData(
+                  targetRegion: route.region,
+                  builder: (ctx) => child,
+                ),
+              );
+              childAssigned = true;
+            } else {
+              // Additional matching routes get their builder called directly
+              final builder = route.builder!;
+              activeRoutes.add(
+                ActiveRouteData(
+                  targetRegion: route.region,
+                  builder: (ctx) => builder(ctx, state),
+                ),
+              );
+            }
           }
         } else if (route is MosaiqueShellRoute && route.region != null) {
           if (_isShellRouteActive(state, route)) {
-            targetRegion = route.region;
-            break;
+            if (!childAssigned) {
+              activeRoutes.add(
+                ActiveRouteData(
+                  targetRegion: route.region!,
+                  builder: (ctx) => child,
+                ),
+              );
+              childAssigned = true;
+            }
           }
         }
-      }
-
-      // Create active routes list
-      // The active route will display go_router's navigator (child)
-      final activeRoutes = <ActiveRouteData>[];
-      if (targetRegion != null) {
-        activeRoutes.add(
-          ActiveRouteData(
-            targetRegion: targetRegion,
-            builder: (ctx) => child, // Use go_router's navigator with animations!
-          ),
-        );
       }
 
       // Provide the shell data to descendant Region widgets
