@@ -17,7 +17,6 @@ void main() {
               shellBuilderCalled = true;
               return const Scaffold(body: Region('content'));
             },
-            regions: const ['content'],
             routes: [
               MosaiqueViewRoute(
                 path: '/test',
@@ -50,7 +49,6 @@ void main() {
                 ],
               ),
             ),
-            regions: const ['header', 'content'],
             fixedRegions: {
               'header': (context) => const Text('Fixed Header'),
             },
@@ -79,7 +77,6 @@ void main() {
         routes: [
           MosaiqueShellRoute(
             shellBuilder: (context) => const Scaffold(body: Region('content')),
-            regions: const ['content'],
             routes: [
               MosaiqueViewRoute(
                 path: '/page1',
@@ -123,7 +120,6 @@ void main() {
                 ],
               ),
             ),
-            regions: const ['list', 'details'],
             fixedRegions: {
               'list': (context) => const Text('Users List'),
             },
@@ -160,7 +156,6 @@ void main() {
                 ],
               ),
             ),
-            regions: const ['content'],
             routes: [
               MosaiqueShellRoute(
                 shellBuilder: (context) => const Column(
@@ -169,7 +164,6 @@ void main() {
                     Expanded(child: Region('inner-content')),
                   ],
                 ),
-                regions: const ['inner-content'],
                 region: 'content', // Inject into parent's content region
                 routes: [
                   MosaiqueViewRoute(
@@ -199,7 +193,6 @@ void main() {
         routes: [
           MosaiqueShellRoute(
             shellBuilder: (context) => const Scaffold(body: Region('content')),
-            regions: const ['content'],
             routes: [
               MosaiqueViewRoute(
                 path: '/items/:itemId',

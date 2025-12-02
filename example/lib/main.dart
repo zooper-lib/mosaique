@@ -37,7 +37,6 @@ class MyApp extends StatelessWidget {
         // =====================================================================
         MosaiqueShellRoute(
           shellBuilder: (context) => const AppShell(),
-          regions: const ['header', 'sidebar', 'content'],
           fixedRegions: {
             'header': (context) => const AppHeader(),
             'sidebar': (context) => const AppSidebar(),
@@ -64,7 +63,6 @@ class MyApp extends StatelessWidget {
             // ==================================================================
             MosaiqueShellRoute(
               shellBuilder: (context) => const TwoColumnShell(),
-              regions: const ['list', 'details'],
               region: 'content', // Inject into parent's content region
               fixedRegions: {
                 'list': (context) => const UsersListView(), // Always show list
@@ -95,7 +93,6 @@ class MyApp extends StatelessWidget {
         // =====================================================================
         MosaiqueShellRoute(
           shellBuilder: (context) => const SimpleShell(),
-          regions: const ['content'],
           routes: [
             // Login view → injected into SimpleShell's content region
             MosaiqueViewRoute(

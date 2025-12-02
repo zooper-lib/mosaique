@@ -19,7 +19,6 @@ void main() {
                 ],
               ),
             ),
-            regions: const ['content'],
             fixedRegions: {
               'header': (context) => const Text('Fixed Header'),
             },
@@ -61,7 +60,6 @@ void main() {
         routes: [
           MosaiqueShellRoute(
             shellBuilder: (context) => const _PersistentShell(),
-            regions: const ['header', 'content'],
             fixedRegions: {
               'header': (context) => const Text('Persistent Header'),
             },
@@ -115,7 +113,6 @@ void main() {
                 ],
               ),
             ),
-            regions: const ['list', 'details'],
             fixedRegions: {
               'list': (context) => const _UsersList(),
             },
@@ -163,7 +160,6 @@ void main() {
         routes: [
           MosaiqueShellRoute(
             shellBuilder: (context) => const Scaffold(body: Region('content')),
-            regions: const ['content'],
             routes: [
               MosaiqueViewRoute(
                 path: '/home',
@@ -236,7 +232,6 @@ void main() {
                 ],
               ),
             ),
-            regions: const ['outer-content'],
             routes: [
               MosaiqueShellRoute(
                 shellBuilder: (context) => const Column(
@@ -245,7 +240,6 @@ void main() {
                     Expanded(child: Region('inner-content')),
                   ],
                 ),
-                regions: const ['inner-content'],
                 region: 'outer-content',
                 routes: [
                   MosaiqueViewRoute(
