@@ -9,9 +9,6 @@ import 'package:mosaique/src/mosaique_view_route.dart';
 /// Shell routes create a persistent layout structure where different views
 /// can be injected into named regions based on navigation.
 class MosaiqueShellRoute extends ShellRoute {
-  /// The list of region names this shell defines.
-  final List<String> regions;
-
   /// A map of region names to builders for regions that always show the same content.
   final Map<String, WidgetBuilder> fixedRegions;
 
@@ -27,19 +24,17 @@ class MosaiqueShellRoute extends ShellRoute {
   /// Creates a shell route with named regions.
   MosaiqueShellRoute({
     required this.shellBuilder,
-    required this.regions,
     this.fixedRegions = const {},
     this.region,
     super.routes = const [],
   }) : childRoutes = routes,
        super(
-         builder: _createBuilder(shellBuilder, regions, fixedRegions, routes),
+         builder: _createBuilder(shellBuilder, fixedRegions, routes),
        );
 
   /// Creates the builder function for the ShellRoute.
   static ShellRouteBuilder _createBuilder(
     WidgetBuilder shellBuilder,
-    List<String> regions,
     Map<String, WidgetBuilder> fixedRegions,
     List<RouteBase> routes,
   ) {
@@ -91,7 +86,6 @@ class MosaiqueShellRoute extends ShellRoute {
 
       // Provide the shell data to descendant Region widgets
       return MosaiqueShellRouteData(
-        regions: regions,
         fixedRegions: fixedRegions,
         activeRoutes: activeRoutes,
         child: shellBuilder(context),

@@ -10,7 +10,6 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: MosaiqueShellRouteData(
-            regions: ['test-region'],
             fixedRegions: {
               'test-region': _buildTestContent,
             },
@@ -28,7 +27,6 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: MosaiqueShellRouteData(
-            regions: ['test-region'],
             fixedRegions: {},
             activeRoutes: [],
             child: Region('test-region'),
@@ -47,7 +45,6 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: MosaiqueShellRouteData(
-            regions: ['region-1', 'region-2'],
             fixedRegions: {
               'region-1': _buildTestContent1,
               'region-2': _buildTestContent2,
@@ -72,7 +69,6 @@ void main() {
       await tester.pumpWidget(
         const MaterialApp(
           home: MosaiqueShellRouteData(
-            regions: ['test-region'],
             fixedRegions: {
               'test-region': _buildFixedContent,
             },

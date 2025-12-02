@@ -19,9 +19,6 @@ class ActiveRouteData {
 /// This widget is created internally by [MosaiqueShellRoute] and should not be
 /// used directly in user code.
 class MosaiqueShellRouteData extends InheritedWidget {
-  /// The list of region names this shell defines.
-  final List<String> regions;
-
   /// A map of region names to builders for regions that always show the same content.
   final Map<String, WidgetBuilder> fixedRegions;
 
@@ -29,7 +26,6 @@ class MosaiqueShellRouteData extends InheritedWidget {
   final List<ActiveRouteData> activeRoutes;
 
   const MosaiqueShellRouteData({
-    required this.regions,
     required this.fixedRegions,
     required this.activeRoutes,
     required super.child,

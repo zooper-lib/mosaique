@@ -58,7 +58,6 @@ final router = GoRouter(
   routes: [
     MosaiqueShellRoute(
       shellBuilder: (context) => const MainShell(),
-      regions: const ['sidebar', 'content'],
       fixedRegions: {
         'sidebar': (context) => const NavigationMenu(),
       },
@@ -149,8 +148,7 @@ Shells can be nested infinitely by specifying a target region:
 MosaiqueShellRoute(
   shellBuilder: (context) => const UsersShell(),
   region: 'content',  // Inject this shell into parent's 'content' region
-  regions: const ['list', 'details'],
-  routes: [
+  fixedRegions: {
     MosaiqueViewRoute(
       path: '/users/:userId',
       region: 'details',
@@ -221,7 +219,6 @@ Defines a shell layout with named regions.
 ```dart
 MosaiqueShellRoute({
   required WidgetBuilder shellBuilder,
-  required List<String> regions,
   Map<String, WidgetBuilder> fixedRegions = const {},
   String? region,  // Target region in parent shell
   List<RouteBase> routes = const [],
