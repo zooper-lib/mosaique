@@ -10,7 +10,6 @@
 ///   routes: [
 ///     MosaiqueShellRoute(
 ///       shellBuilder: (context) => const MainShell(),
-///       regions: const ['header', 'menu', 'content'],
 ///       fixedRegions: {
 ///         'header': (context) => const HeaderView(),
 ///         'menu': (context) => const MainMenuView(),

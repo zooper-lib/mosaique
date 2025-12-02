@@ -34,7 +34,6 @@ The example demonstrates **3 reusable shell templates**:
 ```dart
 MosaiqueShellRoute(
   shellBuilder: (context) => const AppShell(),
-  regions: const ['header', 'sidebar', 'content'],
   fixedRegions: {
     'header': (context) => const AppHeader(),
     'sidebar': (context) => const AppSidebar(),
@@ -52,7 +51,6 @@ MosaiqueShellRoute(
 ```dart
 MosaiqueShellRoute(
   shellBuilder: (context) => const TwoColumnShell(),
-  regions: const ['list', 'details'],
   region: 'content', // Nested inside AppShell
   routes: [
     // UsersListView injected into 'list'
@@ -67,7 +65,6 @@ MosaiqueShellRoute(
 ```dart
 MosaiqueShellRoute(
   shellBuilder: (context) => const SimpleShell(),
-  regions: const ['content'],
   routes: [
     // LoginView injected into 'content'
   ],
